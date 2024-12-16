@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="styles.css">
+  <title>Issue Details</title>
+</head>
+<body>
+  <div class="container">
+    <div class="titlebar">
+      <img class="left" src="./Icons/debug.png" alt="debug">
+      <h1>BugMe Issue Tracker</h1>
+    </div>
+    <div class="sideMenu">
+      <a href="Dashboard.html"><img class="left" src="./Icons/home.png" alt="home">Home</a>
+      <a href="AddNewUserForm.html"><img class="left" src="./Icons/add-user.png" alt="add-user"> Add User</a>  
+      <a href="CreateIssue.html"><img class="left" src="./Icons/addNewIssue.png"> New Issue</a>
+      <a href="logout.php"><img class="left" src="./Icons/logout.png">Logout</a>    
+    </div>
+    <div class="main">
+      <div class="updateIssues">
+        <h2 id="issueName"></h2>
+        <h3 id="issueID"></h3>
+        <p id="issueDescription"></p>
+        <p id="created"></p>
+        <p id="updatedOn"></p>
+        <div class="rightBar">
+          <button id="markClosed">Mark as Closed</button>
+          <button id="markInProgress">Mark In Progress</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const params = new URLSearchParams(window.location.search); // Parse query parameters
+      const issueID = params.get('id'); // Get issue ID from URL
+      
+      if (issueID) {
+        // Fetch issue details from the backend
+        const xhr = new XMLHttpRequest();
+        xhr.open('GET', `getIssue.php?id=${encodeURIComponent(issueID)}`, true);
+        xhr.onload = function() {
+          if (this.status === 200) {
+            const issue = JSON.parse(this.responseText);
+            
+            // Populate issue details in the page
+            document.getElementById('issueName').textContent = issue.title;
+            document.getElementById('issueID').textContent = `Issue #${issue.id}`;
+            document.getElementById('issueDescription').textContent = issue.description;
+            document.getElementById('created').textContent = `Created: ${issue.created_at}`;
+            document.getElementById('updatedOn').textContent = `Last Updated: ${issue.updated_at}`;
+          } else {
+            console.error('Failed to fetch issue details');
+          }
+        };
+        xhr.send();
+      }
+
+      // Event listeners for "Mark as Closed" and "Mark In Progress" buttons
+      document.getElementById('markClosed').addEventListener('click', function() {
+        updateIssueStatus(issueID, 'CLOSED');
+      });
+
+      document.getElementById('markInProgress').addEventListener('click', function() {
+        updateIssueStatus(issueID, 'IN PROGRESS');
+      });
+
+      function updateIssueStatus(issueID, status) {
+        const xhr = new XMLHttpRequest();
+        xhr.open('POST', 'updateIssueStatus.php', true);
+        xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+        xhr.onload = function() {
+          if (this.status === 200) {
+            alert('Status updated successfully!');
+            location.reload();
+          } else {
+            alert('Failed to update issue status.');
+          }
+        };
+        xhr.send(`id=${encodeURIComponent(issueID)}&status=${encodeURIComponent(status)}`);
+      }
+    });
+  </script>
+</body>
+</html>

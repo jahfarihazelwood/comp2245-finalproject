@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel = "stylesheet" href ="styles.css" />
+  <title>DashBoard</title>
+</head>
+<body>
+    <div class="container">
+        <div class="titlebar">
+          <img class="left" src="./Icons/debug.png" alt="debug">
+          <h1>BugMe Issue Tracker</h1>
+        </div>
+        <div class="sideMenu">
+          <a href="Dashboard.html"><img class="left" src="./Icons/home.png" alt="home">Home</a>
+          <a href="AddNewUserForm.html"><img class="left" src="./Icons/add-user.png" alt="add-user"> Add User</a>  
+          <a href="CreateIssue.html"><img class="left" src="./Icons/addNewIssue.png"> New Issue</a>
+          <a href="logout.php"><img class="left" src="./Icons/logout.png">Logout</a>    
+        </div>
+        <div class="main">
+            <div class="issues">
+                <h1>Issues</h1>
+                <button id="createIssue"><a href="CreateIssue.html">Create New Issue</a></button>
+            </div>
+            <div class="filter">
+                <h3>Filter by: </h2>
+                <button class="btn" id="all">ALL</button>
+                <button class="btn" id="open">OPEN</button>
+                <button class="btn" id="my_tickets">MY TICKETS</button>
+            </div>
+            <table>
+              <thead>
+                  <tr>
+                      <th>Title</th>
+                      <th>Description</th>
+                      <th>Type</th>
+                      <th>Priority</th>
+                      <th>Status</th>
+                      <th>Assigned To</th>
+                      <th>Created At</th>
+                  </tr>
+              </thead>
+              <tbody>
+                  <!-- Data will be inserted here by JavaScript -->
+              </tbody>
+          </table>
+        </div>
+    </div>
+    <script src="scripts.js"></script>
+</body>
+</html>
